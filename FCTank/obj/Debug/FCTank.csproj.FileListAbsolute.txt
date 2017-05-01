@@ -1,0 +1,9 @@
+c:\users\administrator\documents\visual studio 2013\Projects\FCTank\FCTank\bin\Debug\FCTank.exe.config
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\bin\Debug\FCTank.exe
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\bin\Debug\FCTank.pdb
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.Form1.resources
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.Properties.Resources.resources
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.exe
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.pdb
