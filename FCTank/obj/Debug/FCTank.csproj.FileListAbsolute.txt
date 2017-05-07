@@ -7,3 +7,12 @@ C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\D
 C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.csproj.GenerateResource.Cache
 C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.exe
 C:\Users\Administrator\Documents\Visual Studio 2013\Projects\FCTank\FCTank\obj\Debug\FCTank.pdb
+G:\FCTank\FCTank\bin\Debug\FCTank.exe.config
+G:\FCTank\FCTank\obj\Debug\FCTank.exe
+G:\FCTank\FCTank\obj\Debug\FCTank.pdb
+G:\FCTank\FCTank\bin\Debug\FCTank.exe
+G:\FCTank\FCTank\bin\Debug\FCTank.pdb
+G:\FCTank\FCTank\obj\Debug\FCTank.csprojResolveAssemblyReference.cache
+G:\FCTank\FCTank\obj\Debug\FCTank.Form1.resources
+G:\FCTank\FCTank\obj\Debug\FCTank.Properties.Resources.resources
+G:\FCTank\FCTank\obj\Debug\FCTank.csproj.GenerateResource.Cache

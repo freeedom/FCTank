@@ -10,14 +10,16 @@ namespace FCTank.Objects
 {
     public enum wallType
     {
-        wall,steel,water,grass
+        wall,steel,water,grass,home,none
     }
-    public class Wall :GameObject
+    [Serializable]
+    public class Wall :GameObject,ICloneable
     {
         public static Bitmap wallBmp = Resources.wall;
         public static Bitmap steelBmp = Resources.steel;
         public static Bitmap waterBmp = Resources.water;
         public static Bitmap grassBmp = Resources.grass;
+        public static Bitmap homeBmp = Resources.home;
         private int hardness;
         private wallType type;
         public int getHardness()
@@ -47,6 +49,13 @@ namespace FCTank.Objects
             else if (type == wallType.steel) g.DrawImage(steelBmp, x, y, width, height);
             else if (type == wallType.wall) g.DrawImage(wallBmp, x, y, width, height);
             else if (type == wallType.water) g.DrawImage(waterBmp, x, y, width, height);
+            else if (type == wallType.home) g.DrawImage(homeBmp, x, y, width, height);
+        }
+
+        public object Clone()
+        {
+            Wall wall = new Wall(this.x, this.y, this.width, this.height, this.canPass, this.hardness, this.type);
+            return wall;
         }
     }
 }

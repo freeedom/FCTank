@@ -243,6 +243,26 @@ namespace FCTank.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        public static System.Drawing.Bitmap home {
+            get {
+                object obj = ResourceManager.GetObject("home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap Index {
+            get {
+                object obj = ResourceManager.GetObject("Index", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         public static System.Drawing.Bitmap p1tankA {
             get {
                 object obj = ResourceManager.GetObject("p1tankA", resourceCulture);
@@ -316,6 +336,26 @@ namespace FCTank.Properties {
         public static System.Drawing.Bitmap p2tankW {
             get {
                 object obj = ResourceManager.GetObject("p2tankW", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap select {
+            get {
+                object obj = ResourceManager.GetObject("select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap selecttank {
+            get {
+                object obj = ResourceManager.GetObject("selecttank", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

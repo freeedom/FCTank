@@ -10,6 +10,7 @@ namespace FCTank.Objects
     {
         W, A, S, D
     }
+     [Serializable]
     public abstract class GameObject
     {
         protected int x;
@@ -60,7 +61,6 @@ namespace FCTank.Objects
             return new Rectangle(x, y, width, height);
         }
         #endregion
-
         public abstract void draw(Graphics g);
     }
 }

@@ -172,6 +172,12 @@
   <data name="grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\grass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Index" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Index.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="p1tankA" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\p1tankA.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -195,6 +201,12 @@
   </data>
   <data name="p2tankW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\p2tankW.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="selecttank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\selecttank.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="steel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\steel.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

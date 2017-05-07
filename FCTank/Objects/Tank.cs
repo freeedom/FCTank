@@ -11,7 +11,6 @@ namespace FCTank.Objects
 {
     public class Tank : GameObject
     {
-        public const int speed5 = 9;
         private int speed;
         private Direction dir;
         private int life;
@@ -135,23 +134,23 @@ namespace FCTank.Objects
         {
             return tankMaps[type][dir];
         }
-        public void move()
+        public void move(int canMove)
         {
             if (dir == Direction.W)
             {
-                y -= speed;
+                y -= canMove;
             }
             else if (dir == Direction.A)
             {
-                x -= speed;
+                x -= canMove;
             }
             else if (dir == Direction.S)
             {
-                y += speed;
+                y += canMove;
             }
             else if (dir == Direction.D)
             {
-                x += speed;
+                x += canMove;
             }
         }
         public void fire()
