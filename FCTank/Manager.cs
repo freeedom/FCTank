@@ -10,13 +10,27 @@ namespace FCTank
 {
     public class Manager
     {     
-         bool hasTwoPlayer;
+         private bool hasTwoPlayer;
          Dictionary<string, Tank> playerTankTable;
          public Tank player1Tank; 
          List<Tank> enemyTankList;
          List<Bullet> enemyBulletList;
          List<Bullet> playerBulletList;
          List<Wall> wallList;
+         private bool isFinish = false;//检测游戏是否结束返回主界面
+        public bool Finish
+         {
+            get
+             {
+                 return isFinish;
+             }
+         }
+        public bool TwoPlayer
+        {
+            get { return hasTwoPlayer; }
+            set { this.hasTwoPlayer = value; }
+        }
+        private int enemyTankCounts = 23;//设置每关坦克数量为23
         public Manager()
         {
             init();
@@ -28,8 +42,10 @@ namespace FCTank
              playerTankTable.Add("player1", player1Tank);
             enemyTankList = new List<Tank>();
             enemyBulletList = new List<Bullet>();
-            playerBulletList = new List<Bullet>();          
-            enemyTankList.Add(new Tank(1, 0, Direction.D, 1, false, 270, 270, 60, 60, false, this, 1));
+            playerBulletList = new List<Bullet>();
+            enemyTankList.Add(Factory.createEnemyTankByRandom(0, 0, this));
+            enemyTankList.Add(Factory.createEnemyTankByRandom(360, 0, this));
+            enemyTankList.Add(Factory.createEnemyTankByRandom(720, 0, this));
         }
         public void setMap(List<Wall> wallList)
         {
@@ -52,7 +68,11 @@ namespace FCTank
                        isHit = true;                     
                        enemyBulletList.RemoveAt(j);
                    }
-                   if (isHit) playerBulletList.RemoveAt(i);
+                   if (isHit)
+                   {
+                       playerBulletList.RemoveAt(i);
+                       break;
+                   }
                }
            } 
            //玩家子弹是否打中敌方坦克
@@ -63,13 +83,35 @@ namespace FCTank
                   if(playerBulletList[i].getRectangle().IntersectsWith(enemyTankList[j].getRectangle()))
                   {
                       playerBulletList.RemoveAt(i);
-                      enemyTankList.RemoveAt(j);
+                      if (enemyTankList[j].getType() == 1 || enemyTankList[j].getType() == 2) enemyTankList.RemoveAt(j);
+                      else if(enemyTankList[j].getType()==3)
+                      {
+                          enemyTankList[j].setType(2);
+                          enemyTankList[j].setLife(enemyTankList[j].getLife() - 1);
+                      }
+                      else if (enemyTankList[j].getType() ==4)
+                      {
+                          enemyTankList[j].setType(3);
+                          enemyTankList[j].setLife(enemyTankList[j].getLife() - 1);
+                      }
+                      break;
                   }
               }
           }
+            //敌方子弹是否击中玩家坦克
+          List<Tank> playerTanks = playerTankTable.Values.ToList();
           for(int i=enemyBulletList.Count-1;i>=0;i--)
           {
-              //敌方子弹击中玩家
+             for(int j=playerTanks.Count-1;j>=0;j--)
+             {
+                 if(enemyBulletList[i].getRectangle().IntersectsWith(playerTanks[j].getRectangle()))
+                 {
+                     enemyBulletList.RemoveAt(i);
+                     playerTanks[j].setX(270);
+                     playerTanks[j].setY(720);
+                     playerTanks[j].setLife(playerTanks[j].getLife() - 1);
+                 }
+             }
           }
             //玩家子弹是否击中墙
           for(int i=playerBulletList.Count-1;i>=0;i--)
@@ -103,6 +145,7 @@ namespace FCTank
                       rmBullet = true;
                       wallList.RemoveAt(j);
                   }
+                  if (wallList[j] == null) continue;
                   if (enemyBulletList[i].getRectangle().IntersectsWith(wallList[j].getRectangle()) && (enemyBulletList[i].Getattack() < wallList[j].getHardness()) && (wallList[j].isCanPass() == false))
                   {
                       rmBullet = true;
@@ -180,7 +223,7 @@ namespace FCTank
             else if (tank.getDir() == Direction.A) { x = tank.getX() - 15; y = tank.getY() + 22; }
             else if (tank.getDir() == Direction.S) { x = tank.getX() + 22; y = tank.getY() + 60; }
             else if (tank.getDir() == Direction.D) { x = tank.getX() + 60; y = tank.getY() + 22; }
-            Bullet bullet = new Bullet(x, y, 15, 15, false, tank.getIsPlayer(),6, tank.getAttack(),tank.getDir(),tank);
+            Bullet bullet = new Bullet(x, y, 15, 15, false, tank.getIsPlayer(),15, tank.getAttack(),tank.getDir(),tank);
             if (tank.getIsPlayer()) playerBulletList.Add(bullet);
             else enemyBulletList.Add(bullet);
         }
@@ -199,12 +242,39 @@ namespace FCTank
         }
         public void move()
         {
-            for(int i=0;i<playerBulletList.Count;i++)
-            {
-                playerBulletList[i].move();
-            }
+            for (int i = 0; i < playerBulletList.Count; i++) playerBulletList[i].move();           
             List<Tank> playerTanks = playerTankTable.Values.ToList();
             for (int i = 0; i < playerTankTable.Values.Count; i++) playerTanks[i].move(getHowMuchCanMove(playerTanks[i]));
+            for (int i = 0; i < enemyTankList.Count; i++)
+            {
+                int len = getHowMuchCanMove(enemyTankList[i]);
+                if(len==0)
+                {
+                    Random random = new Random();
+                    switch(random.Next(1,5))
+                    {
+                        case 1:
+                            enemyTankList[i].setDir(Direction.W);
+                            break;
+                        case 2:
+                            enemyTankList[i].setDir(Direction.A);
+                            break;
+                        case 3:
+                            enemyTankList[i].setDir(Direction.S);
+                            break;
+                        case 4:
+                            enemyTankList[i].setDir(Direction.D);
+                            break;
+                    }
+                }
+                len = getHowMuchCanMove(enemyTankList[i]);
+                enemyTankList[i].move(len);
+            }
+            for (int i = 0; i < enemyBulletList.Count; i++) enemyBulletList[i].move();
+        }
+        public void enemyFire()
+        {
+            for (int i = 0; i < enemyTankList.Count; i++) fire(enemyTankList[i]);
         }
     }
 }

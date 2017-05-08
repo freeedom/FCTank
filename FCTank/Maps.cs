@@ -25,5 +25,12 @@ namespace FCTank
         {
             walls.Add(wallList);
         }
+        public int Count
+        {
+            get
+            {
+                return walls.Count;
+            }
+        }
     }
 }

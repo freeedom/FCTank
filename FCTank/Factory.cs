@@ -33,5 +33,25 @@ namespace FCTank
             }
             return null;
         }
+        public static Tank createEnemyTankByRandom(int x,int y,Manager manager)
+        {
+            Random random = new Random();
+            System.Threading.Thread.Sleep(15);
+            int option = random.Next(1, 4);
+            Tank tank = null;
+            switch(option)
+            {
+                case 1:
+                    tank = new Tank(1, 3, Direction.S, 1, false, x, y, 60, 60, false, manager, 1);
+                    break;
+                case 2:
+                    tank = new Tank(2, 2, Direction.S, 3, false, x, y, 60, 60, false, manager, 1);
+                    break;
+                case 3:
+                    tank = new Tank(4, 2, Direction.S, 1, false, x, y, 60, 60, false, manager, 1);
+                    break;
+            }
+            return tank;
+        }
     }
 }

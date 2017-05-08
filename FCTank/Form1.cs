@@ -13,8 +13,8 @@ namespace FCTank
 {
     public partial class Form1 : Form
     {
-        private Point[] threePoints = new Point[] { new Point(250, 395),new Point(250,462),new Point(250,525) };
-        private int position = 0;
+        private Point[] threePoints = new Point[] { new Point(250, 395),new Point(250,462),new Point(250,525) };//selectTank显示的位置
+        private int position = 0; //控制选择单人，双人，还是地图编辑选项
         private List<Keys> playerKeysDownList;
         private Manager manager;
         private MapManager mapManager;
@@ -24,27 +24,42 @@ namespace FCTank
         private bool isBtnClick=false;//是否正在使用地图编辑器中某个wall
         private wallType type;//正在编辑的wall的类型
         private bool isInMain=true;//是否在主界面
-        private bool isInPlay;//是否在游戏界面
+        private bool isInPlay=false;//是否在游戏界面
+        private bool isInChose=false;//是否在关卡选择界面
 
         public Form1()
         {
             InitializeComponent();
         }
 
-
+        private void initChose()
+        {
+            isInMain = isInPlay = isInMapEdit = false;
+            isInChose = true;
+            panelMapEdit.Enabled = false;
+            panelMapEdit.Visible = false;
+            pictureBox1.Enabled = false;
+            pictureBox1.Visible = false;
+            panelChose.Visible = panelChose.Enabled = true;
+            pictureBox1.BorderStyle = BorderStyle.None;
+            timer1.Stop();
+            timer2.Stop();
+          
+        }
         private void initMain()
         {
-            isInMapEdit = isInPlay = false;
+            isInMapEdit = isInPlay =isInChose= false;
             isInMain = true;
             panelMapEdit.Enabled = false;
             panelMapEdit.Visible = false;
+            panelChose.Enabled = panelChose.Visible = false;
             pictureBox1.BorderStyle = BorderStyle.None;
             timer1.Stop();
             timer2.Stop();
         }
         private void initMapEdit()
         {
-            isInMain = isInPlay = false;
+            isInMain = isInPlay =isInChose= false;
             isInMapEdit = true;
             panelMapEdit.Enabled = true; ;
             panelMapEdit.Visible = true; ;
@@ -53,14 +68,23 @@ namespace FCTank
             timer1.Start();
             timer2.Stop();
         }
-        private void initPlay()
+        private void initPlay(int stage)
         {
-            isInMain = isInMapEdit = false;
+            isInMain = isInMapEdit =isInChose= false;
             isInPlay = true;
-            manager = new Manager();
-            playerKeysDownList = new List<Keys>();
-           
-            manager.setMap(maps.getWallList(0));
+            pictureBox1.Enabled = pictureBox1.Visible = true;
+            panelChose.Visible = panelChose.Enabled = false;
+            panelMapEdit.Enabled = panelMapEdit.Visible = false;
+            Manager tempManager = new Manager();
+            if(manager!=null&& !manager.Finish)
+            {
+                tempManager.player1Tank.setLife(manager.player1Tank.getLife());
+                tempManager.player1Tank.setAttack(manager.player1Tank.getAttack());
+               
+            }
+            manager = tempManager;
+            playerKeysDownList = new List<Keys>();          
+            manager.setMap(maps.getWallList(stage));
             timer1.Start();
             timer2.Start();
         }
@@ -90,7 +114,7 @@ namespace FCTank
             if(isInPlay)
             {
                 drawFuzhu(e.Graphics);
-                manager.draw(e.Graphics);
+               if(manager!=null) manager.draw(e.Graphics);
             }
             else if(isInMain)
             {
@@ -141,7 +165,7 @@ namespace FCTank
                 {
                     if (position == 0 || position == 1)
                     {
-                        initPlay();
+                        initChose();
                     }
                     else
                     {
@@ -150,18 +174,23 @@ namespace FCTank
                 }
                 pictureBox1.Invalidate();
             }
-            if ((e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D)&&playerKeysDownList.Contains(e.KeyData)   )
+            if(isInPlay)
             {
-                playerKeysDownList.Remove(e.KeyData);
-                manager.player1Tank.setSpeed(0);
-            }
+                if ((e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D) && playerKeysDownList.Contains(e.KeyData))
+                {
+                    playerKeysDownList.Remove(e.KeyData);
+                    manager.player1Tank.setSpeed(0);
+                }
             
+            }
+           
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
             manager.hit();
             manager.move();
+            manager.enemyFire();
             this.Text = manager.player1Tank.getX() + " " + manager.player1Tank.getY();
         }
 
@@ -241,6 +270,27 @@ namespace FCTank
             maps.addWallList(mapManager.WallList);
             initMain();
             pictureBox1.Invalidate();
+        }
+
+        private void btnPrevStage_Click(object sender, EventArgs e)
+        {
+            int stageIndex = Convert.ToInt32(labelStage.Text);
+            stageIndex = stageIndex - 1;
+            if (stageIndex == 0) stageIndex = maps.Count;
+            labelStage.Text = stageIndex.ToString();
+        }
+
+        private void btnNextStage_Click(object sender, EventArgs e)
+        {
+            int stageIndex = Convert.ToInt32(labelStage.Text);
+            stageIndex = (stageIndex % maps.Count) + 1;
+            labelStage.Text = stageIndex.ToString();
+        }
+
+        private void btnGo_Click(object sender, EventArgs e)
+        {
+            int stageIndex = Convert.ToInt32(labelStage.Text);
+            initPlay(stageIndex-1);
         }
 
     }
