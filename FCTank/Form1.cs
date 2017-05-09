@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FCTank.Objects;
 using FCTank.Properties;
+using System.Threading;
 namespace FCTank
 {
     public partial class Form1 : Form
@@ -19,6 +20,7 @@ namespace FCTank
         private Manager manager;
         private MapManager mapManager;
         private Maps maps;
+        private int stage;
 
         private bool isInMapEdit=false;//是否在地图编辑器界面
         private bool isBtnClick=false;//是否正在使用地图编辑器中某个wall
@@ -28,7 +30,7 @@ namespace FCTank
         private bool isInChose=false;//是否在关卡选择界面
 
         public Form1()
-        {
+        {          
             InitializeComponent();
         }
 
@@ -138,7 +140,7 @@ namespace FCTank
             {
                 if (e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D)
                 {
-                    manager.player1Tank.setSpeed(3);
+                    manager.player1Tank.setSpeed(5);
                     if (playerKeysDownList.Contains(Keys.W)) playerKeysDownList.Remove(Keys.W);
                     if (playerKeysDownList.Contains(Keys.A)) playerKeysDownList.Remove(Keys.A);
                     if (playerKeysDownList.Contains(Keys.S)) playerKeysDownList.Remove(Keys.S);
@@ -188,9 +190,22 @@ namespace FCTank
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            manager.checkGameFinish();
+            if (manager.Finish)
+            {
+                initMain();
+                pictureBox1.Invalidate();
+                return;
+            }
+            if(manager.TankCounts==0)
+            {
+                initChose();
+            }
             manager.hit();
             manager.move();
             manager.enemyFire();
+            manager.addIfTanksLessFour();
+          
             this.Text = manager.player1Tank.getX() + " " + manager.player1Tank.getY();
         }
 
@@ -290,6 +305,7 @@ namespace FCTank
         private void btnGo_Click(object sender, EventArgs e)
         {
             int stageIndex = Convert.ToInt32(labelStage.Text);
+            stage = stageIndex;
             initPlay(stageIndex-1);
         }
 

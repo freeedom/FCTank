@@ -16,3 +16,12 @@ G:\FCTank\FCTank\obj\Debug\FCTank.csprojResolveAssemblyReference.cache
 G:\FCTank\FCTank\obj\Debug\FCTank.Form1.resources
 G:\FCTank\FCTank\obj\Debug\FCTank.Properties.Resources.resources
 G:\FCTank\FCTank\obj\Debug\FCTank.csproj.GenerateResource.Cache
+D:\14145311\FCTank\FCTank\bin\Debug\FCTank.exe.config
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.exe
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.pdb
+D:\14145311\FCTank\FCTank\bin\Debug\FCTank.exe
+D:\14145311\FCTank\FCTank\bin\Debug\FCTank.pdb
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.csprojResolveAssemblyReference.cache
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.Form1.resources
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.Properties.Resources.resources
+D:\14145311\FCTank\FCTank\obj\Debug\FCTank.csproj.GenerateResource.Cache

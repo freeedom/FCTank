@@ -31,6 +31,14 @@ namespace FCTank
             set { this.hasTwoPlayer = value; }
         }
         private int enemyTankCounts = 23;//设置每关坦克数量为23
+        public int TankCounts
+        {
+            get
+            {
+                return enemyTankCounts + enemyTankList.Count;
+            }
+        }
+
         public Manager()
         {
             init();
@@ -123,7 +131,7 @@ namespace FCTank
                   if(playerBulletList[i].getRectangle().IntersectsWith(wallList[j].getRectangle())&&(playerBulletList[i].Getattack()>=wallList[j].getHardness())&&(wallList[j].isCanPass()==false))
                   {
                       rmBullet = true;
-                      wallList.RemoveAt(j);
+                      wallList[j] = null;
                   }
                   if (wallList[j] == null) continue;
                   if (playerBulletList[i].getRectangle().IntersectsWith(wallList[j].getRectangle()) && (playerBulletList[i].Getattack() < wallList[j].getHardness()) && (wallList[j].isCanPass() == false))
@@ -143,7 +151,7 @@ namespace FCTank
                   if (enemyBulletList[i].getRectangle().IntersectsWith(wallList[j].getRectangle()) && (enemyBulletList[i].Getattack() >= wallList[j].getHardness()) && (wallList[j].isCanPass() == false))
                   {
                       rmBullet = true;
-                      wallList.RemoveAt(j);
+                      wallList[j] = null;
                   }
                   if (wallList[j] == null) continue;
                   if (enemyBulletList[i].getRectangle().IntersectsWith(wallList[j].getRectangle()) && (enemyBulletList[i].Getattack() < wallList[j].getHardness()) && (wallList[j].isCanPass() == false))
@@ -275,6 +283,45 @@ namespace FCTank
         public void enemyFire()
         {
             for (int i = 0; i < enemyTankList.Count; i++) fire(enemyTankList[i]);
+        }
+        public void addIfTanksLessFour()
+        {
+            Random r = new Random();
+            if(enemyTankList.Count<4&&enemyTankCounts>0)
+            {
+                int opt = r.Next(1, 4);
+                Tank tank = null;
+                switch(opt)
+                {
+                    case 1:
+                        tank = Factory.createEnemyTankByRandom(0, 0, this);
+                        break;
+                    case 2:
+                        tank = Factory.createEnemyTankByRandom(360, 0, this);
+                        break;
+                    case 3:
+                        tank = Factory.createEnemyTankByRandom(720, 0, this);
+                        break;
+                }
+                if (getHowMuchCanMove(tank) == 0) return;
+                enemyTankList.Add(tank);
+                enemyTankCounts -= 1;
+            }
+        }
+        public void checkGameFinish()
+        {
+            bool finish = true;
+            List<Tank> playerTanks = playerTankTable.Values.ToList();
+            for(int i=0;i<playerTanks.Count;i++)
+            {
+                if( playerTanks[i].getLife()!=0 )
+                {
+                    finish = false;
+                    break;
+                }
+            }
+            if (wallList[12 + 24 * 26] == null) finish = true;
+            isFinish = finish;
         }
     }
 }
