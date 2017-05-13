@@ -21,6 +21,7 @@ namespace FCTank
         private MapManager mapManager;
         private Maps maps;
         private int stage;
+        private bool hasTwoPlayer = false;
 
         private bool isInMapEdit=false;//是否在地图编辑器界面
         private bool isBtnClick=false;//是否正在使用地图编辑器中某个wall
@@ -46,6 +47,7 @@ namespace FCTank
             pictureBox1.BorderStyle = BorderStyle.None;
             timer1.Stop();
             timer2.Stop();
+            timer3.Stop();
           
         }
         private void initMain()
@@ -55,9 +57,11 @@ namespace FCTank
             panelMapEdit.Enabled = false;
             panelMapEdit.Visible = false;
             panelChose.Enabled = panelChose.Visible = false;
+            hasTwoPlayer = false;
             pictureBox1.BorderStyle = BorderStyle.None;
             timer1.Stop();
             timer2.Stop();
+            timer3.Stop();
         }
         private void initMapEdit()
         {
@@ -69,6 +73,7 @@ namespace FCTank
             mapManager = new MapManager();
             timer1.Start();
             timer2.Stop();
+            timer3.Stop();
         }
         private void initPlay(int stage)
         {
@@ -77,18 +82,25 @@ namespace FCTank
             pictureBox1.Enabled = pictureBox1.Visible = true;
             panelChose.Visible = panelChose.Enabled = false;
             panelMapEdit.Enabled = panelMapEdit.Visible = false;
-            Manager tempManager = new Manager();
+            Manager tempManager = new Manager(hasTwoPlayer);
             if(manager!=null&& !manager.Finish)
             {
                 tempManager.player1Tank.setLife(manager.player1Tank.getLife());
                 tempManager.player1Tank.setAttack(manager.player1Tank.getAttack());
-               
+                if (manager.player1Tank.getLife() <= 0) manager.playerTankTable.Remove("player1");
+                if(hasTwoPlayer)
+                {
+                    tempManager.player2Tank.setLife(manager.player2Tank.getLife());
+                    tempManager.player2Tank.setAttack(manager.player2Tank.getAttack());
+                    if (manager.player2Tank.getLife() <= 0) manager.playerTankTable.Remove("player2");
+                }
             }
             manager = tempManager;
             playerKeysDownList = new List<Keys>();          
             manager.setMap(maps.getWallList(stage));
             timer1.Start();
             timer2.Start();
+            timer3.Start();
         }
 
         //主界面画面
@@ -115,7 +127,7 @@ namespace FCTank
         {
             if(isInPlay)
             {
-                drawFuzhu(e.Graphics);
+                //drawFuzhu(e.Graphics);
                if(manager!=null) manager.draw(e.Graphics);
             }
             else if(isInMain)
@@ -151,7 +163,24 @@ namespace FCTank
                     else if (e.KeyData == Keys.S) manager.player1Tank.setDir(Direction.S);
                     else if (e.KeyData == Keys.D) manager.player1Tank.setDir(Direction.D);
                 }
-                if (e.KeyData == Keys.J) manager.player1Tank.fire();
+                if (manager.player1Tank.getLife()>0&& e.KeyData == Keys.J) manager.player1Tank.fire();
+                if(hasTwoPlayer)
+                {
+                    if (e.KeyData == Keys.Up || e.KeyData == Keys.Left|| e.KeyData == Keys.Down || e.KeyData == Keys.Right)
+                    {
+                        manager.player2Tank.setSpeed(5);
+                        if (playerKeysDownList.Contains(Keys.Up)) playerKeysDownList.Remove(Keys.Up);
+                        if (playerKeysDownList.Contains(Keys.Left)) playerKeysDownList.Remove(Keys.Left);
+                        if (playerKeysDownList.Contains(Keys.Down)) playerKeysDownList.Remove(Keys.Down);
+                        if (playerKeysDownList.Contains(Keys.Right)) playerKeysDownList.Remove(Keys.Right);
+                        playerKeysDownList.Add(e.KeyData);
+                        if (e.KeyData == Keys.Up) manager.player2Tank.setDir(Direction.W);
+                        else if (e.KeyData == Keys.Left) manager.player2Tank.setDir(Direction.A);
+                        else if (e.KeyData == Keys.Down) manager.player2Tank.setDir(Direction.S);
+                        else if (e.KeyData == Keys.Right) manager.player2Tank.setDir(Direction.D);
+                    }
+                    if (manager.player2Tank.getLife()>0&&e.KeyData == Keys.NumPad0) manager.player2Tank.fire();
+                }
             }
             
            
@@ -168,6 +197,7 @@ namespace FCTank
                     if (position == 0 || position == 1)
                     {
                         initChose();
+                        if (position == 1) hasTwoPlayer = true;
                     }
                     else
                     {
@@ -178,12 +208,19 @@ namespace FCTank
             }
             if(isInPlay)
             {
-                if ((e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D) && playerKeysDownList.Contains(e.KeyData))
+                if (manager.player1Tank.getLife()>0&& (e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D) && playerKeysDownList.Contains(e.KeyData))
                 {
                     playerKeysDownList.Remove(e.KeyData);
                     manager.player1Tank.setSpeed(0);
                 }
-            
+                if(hasTwoPlayer)
+                {
+                    if (manager.player2Tank.getLife()>0&&(e.KeyData == Keys.Up || e.KeyData == Keys.Left || e.KeyData == Keys.Down || e.KeyData == Keys.Right) && playerKeysDownList.Contains(e.KeyData))
+                    {
+                        playerKeysDownList.Remove(e.KeyData);
+                        manager.player2Tank.setSpeed(0);
+                    }
+                }
             }
            
         }
@@ -203,7 +240,7 @@ namespace FCTank
             }
             manager.hit();
             manager.move();
-            manager.enemyFire();
+          
             manager.addIfTanksLessFour();
           
             this.Text = manager.player1Tank.getX() + " " + manager.player1Tank.getY();
@@ -307,6 +344,11 @@ namespace FCTank
             int stageIndex = Convert.ToInt32(labelStage.Text);
             stage = stageIndex;
             initPlay(stageIndex-1);
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            manager.enemyFire();
         }
 
     }

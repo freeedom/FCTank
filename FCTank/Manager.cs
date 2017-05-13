@@ -11,8 +11,10 @@ namespace FCTank
     public class Manager
     {     
          private bool hasTwoPlayer;
-         Dictionary<string, Tank> playerTankTable;
-         public Tank player1Tank; 
+         public Dictionary<string, Tank> playerTankTable;
+         private Random random = new Random();
+         public Tank player1Tank;
+         public Tank player2Tank;
          List<Tank> enemyTankList;
          List<Bullet> enemyBulletList;
          List<Bullet> playerBulletList;
@@ -39,8 +41,9 @@ namespace FCTank
             }
         }
 
-        public Manager()
+        public Manager(bool hasTowPlayer)
         {
+            this.hasTwoPlayer = hasTowPlayer;
             init();
         }
         private void init()
@@ -48,6 +51,11 @@ namespace FCTank
              player1Tank = new Tank(5, 0, Direction.W, 4, true, 270, 720, 60, 60, false,this,1);
              playerTankTable = new Dictionary<string, Tank>();
              playerTankTable.Add("player1", player1Tank);
+            if(hasTwoPlayer)
+            {
+                player2Tank = new Tank(6, 0, Direction.W, 4, true, 450, 720, 60, 60, false, this, 1);
+                playerTankTable.Add("player2", player2Tank);
+            }
             enemyTankList = new List<Tank>();
             enemyBulletList = new List<Bullet>();
             playerBulletList = new List<Bullet>();
@@ -115,12 +123,16 @@ namespace FCTank
                  if(enemyBulletList[i].getRectangle().IntersectsWith(playerTanks[j].getRectangle()))
                  {
                      enemyBulletList.RemoveAt(i);
-                     playerTanks[j].setX(270);
+                     if (player1Tank == playerTanks[j]) playerTanks[j].setX(270);
+                     else player2Tank.setX(450);
                      playerTanks[j].setY(720);
                      playerTanks[j].setLife(playerTanks[j].getLife() - 1);
+                  
                  }
              }
           }
+          if (player1Tank.getLife() <= 0&&playerTankTable.ContainsKey("player1")) playerTankTable.Remove("player1");
+          if (hasTwoPlayer && player2Tank.getLife() <= 0&&playerTankTable.ContainsKey("player2")) playerTankTable.Remove("player2");
             //玩家子弹是否击中墙
           for(int i=playerBulletList.Count-1;i>=0;i--)
           {
@@ -237,6 +249,7 @@ namespace FCTank
         }
         public void draw(Graphics g)
         {
+        
             List<Tank> playerTanks=playerTankTable.Values.ToList();
             for (int i = 0; i < playerTankTable.Values.Count; i++) playerTanks[i].draw(g);
             for (int i = 0; i < enemyTankList.Count; i++) enemyTankList[i].draw(g);
@@ -247,6 +260,7 @@ namespace FCTank
                 if (wallList[i] == null) continue;
                 wallList[i].draw(g);
             }
+          
         }
         public void move()
         {
@@ -257,8 +271,7 @@ namespace FCTank
             {
                 int len = getHowMuchCanMove(enemyTankList[i]);
                 if(len==0)
-                {
-                    Random random = new Random();
+                {                
                     switch(random.Next(1,5))
                     {
                         case 1:
@@ -274,6 +287,7 @@ namespace FCTank
                             enemyTankList[i].setDir(Direction.D);
                             break;
                     }
+                    System.Threading.Thread.Sleep(20);
                 }
                 len = getHowMuchCanMove(enemyTankList[i]);
                 enemyTankList[i].move(len);
@@ -310,16 +324,10 @@ namespace FCTank
         }
         public void checkGameFinish()
         {
-            bool finish = true;
-            List<Tank> playerTanks = playerTankTable.Values.ToList();
-            for(int i=0;i<playerTanks.Count;i++)
-            {
-                if( playerTanks[i].getLife()!=0 )
-                {
-                    finish = false;
-                    break;
-                }
-            }
+            bool finish = false;
+            if (!hasTwoPlayer && player1Tank.getLife() <= 0) finish = true;
+            if (hasTwoPlayer && player1Tank.getLife() <= 0 && player2Tank.getLife() <= 0) finish = true;
+          
             if (wallList[12 + 24 * 26] == null) finish = true;
             isFinish = finish;
         }
