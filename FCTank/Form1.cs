@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FCTank.Objects;
 using FCTank.Properties;
 using System.Threading;
+using System.Media;
 namespace FCTank
 {
     public partial class Form1 : Form
@@ -43,6 +44,7 @@ namespace FCTank
             panelMapEdit.Visible = false;
             pictureBox1.Enabled = false;
             pictureBox1.Visible = false;
+            panelInfo.Visible = panelInfo.Enabled = false;
             panelChose.Visible = panelChose.Enabled = true;
             pictureBox1.BorderStyle = BorderStyle.None;
             timer1.Stop();
@@ -56,6 +58,7 @@ namespace FCTank
             isInMain = true;
             panelMapEdit.Enabled = false;
             panelMapEdit.Visible = false;
+            panelInfo.Visible = panelInfo.Enabled = false;
             panelChose.Enabled = panelChose.Visible = false;
             hasTwoPlayer = false;
             pictureBox1.BorderStyle = BorderStyle.None;
@@ -65,6 +68,7 @@ namespace FCTank
         }
         private void initMapEdit()
         {
+            panelInfo.Visible = panelInfo.Enabled = false;
             isInMain = isInPlay =isInChose= false;
             isInMapEdit = true;
             panelMapEdit.Enabled = true; ;
@@ -79,9 +83,11 @@ namespace FCTank
         {
             isInMain = isInMapEdit =isInChose= false;
             isInPlay = true;
+            panelInfo.Visible = panelInfo.Enabled = true;
             pictureBox1.Enabled = pictureBox1.Visible = true;
             panelChose.Visible = panelChose.Enabled = false;
             panelMapEdit.Enabled = panelMapEdit.Visible = false;
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             Manager tempManager = new Manager(hasTwoPlayer);
             if(manager!=null&& !manager.Finish)
             {
@@ -101,6 +107,7 @@ namespace FCTank
             timer1.Start();
             timer2.Start();
             timer3.Start();
+            playMusic(Resources.start);          
         }
 
         //主界面画面
@@ -150,6 +157,23 @@ namespace FCTank
         {
             if(isInPlay)
             {
+                if(e.KeyData==Keys.P)
+                {
+                    if(playerKeysDownList.Contains(Keys.P))
+                    {
+                        timer1.Start();
+                        timer2.Start();
+                        timer3.Start();
+                        playerKeysDownList.Remove(Keys.P);
+                    }
+                    else
+                    {
+                        timer1.Stop();
+                        timer2.Stop();
+                        timer3.Stop();
+                        playerKeysDownList.Add(Keys.P);
+                    }
+                }
                 if (e.KeyData == Keys.W || e.KeyData == Keys.A || e.KeyData == Keys.S || e.KeyData == Keys.D)
                 {
                     manager.player1Tank.setSpeed(5);
@@ -163,7 +187,7 @@ namespace FCTank
                     else if (e.KeyData == Keys.S) manager.player1Tank.setDir(Direction.S);
                     else if (e.KeyData == Keys.D) manager.player1Tank.setDir(Direction.D);
                 }
-                if (manager.player1Tank.getLife()>0&& e.KeyData == Keys.J) manager.player1Tank.fire();
+                if (manager.player1Tank.getLife() > 0 && e.KeyData == Keys.J) { manager.player1Tank.fire();  }
                 if(hasTwoPlayer)
                 {
                     if (e.KeyData == Keys.Up || e.KeyData == Keys.Left|| e.KeyData == Keys.Down || e.KeyData == Keys.Right)
@@ -179,7 +203,7 @@ namespace FCTank
                         else if (e.KeyData == Keys.Down) manager.player2Tank.setDir(Direction.S);
                         else if (e.KeyData == Keys.Right) manager.player2Tank.setDir(Direction.D);
                     }
-                    if (manager.player2Tank.getLife()>0&&e.KeyData == Keys.NumPad0) manager.player2Tank.fire();
+                    if (manager.player2Tank.getLife() > 0 && e.KeyData == Keys.NumPad0) { manager.player2Tank.fire();  }
                 }
             }
             
@@ -349,7 +373,21 @@ namespace FCTank
         private void timer3_Tick(object sender, EventArgs e)
         {
             manager.enemyFire();
+            changePanelInfo();
         }
 
+        private void changePanelInfo()
+        {
+            lbTank.Text = "敌方坦克剩余:"+manager.TankCounts;
+            lbPlayer1.Text = "1P:" + manager.player1Tank.getLife();
+            if (hasTwoPlayer) lbPlayer2.Text = "2P:" + manager.player2Tank.getLife();
+            else lbPlayer2.Text = "2P:0";
+        }
+        private void playMusic(System.IO.Stream stream)
+        {
+            SoundPlayer player = new SoundPlayer(stream);
+            player.LoadAsync();
+            player.Play();
+        }
     }
 }

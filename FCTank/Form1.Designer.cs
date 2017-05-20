@@ -47,9 +47,14 @@
             this.labelStage = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.panelInfo = new System.Windows.Forms.Panel();
+            this.lbTank = new System.Windows.Forms.Label();
+            this.lbPlayer1 = new System.Windows.Forms.Label();
+            this.lbPlayer2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelMapEdit.SuspendLayout();
             this.panelChose.SuspendLayout();
+            this.panelInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -68,7 +73,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 1;
+            this.timer1.Interval = 16;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // timer2
@@ -252,12 +257,59 @@
             // 
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
+            // panelInfo
+            // 
+            this.panelInfo.Controls.Add(this.lbPlayer2);
+            this.panelInfo.Controls.Add(this.lbPlayer1);
+            this.panelInfo.Controls.Add(this.lbTank);
+            this.panelInfo.Location = new System.Drawing.Point(779, 0);
+            this.panelInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panelInfo.Name = "panelInfo";
+            this.panelInfo.Size = new System.Drawing.Size(292, 790);
+            this.panelInfo.TabIndex = 3;
+            this.panelInfo.Dock = System.Windows.Forms.DockStyle.Right;
+            
+            // 
+            // lbTank
+            // 
+            this.lbTank.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbTank.ForeColor = System.Drawing.Color.Red;
+            this.lbTank.Location = new System.Drawing.Point(3, 80);
+            this.lbTank.Name = "lbTank";
+            this.lbTank.Size = new System.Drawing.Size(289, 53);
+            this.lbTank.TabIndex = 0;
+            this.lbTank.Text = "label2";
+            this.lbTank.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbPlayer1
+            // 
+            this.lbPlayer1.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbPlayer1.ForeColor = System.Drawing.Color.Red;
+            this.lbPlayer1.Location = new System.Drawing.Point(28, 329);
+            this.lbPlayer1.Name = "lbPlayer1";
+            this.lbPlayer1.Size = new System.Drawing.Size(239, 53);
+            this.lbPlayer1.TabIndex = 1;
+            this.lbPlayer1.Text = "label2";
+            this.lbPlayer1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbPlayer2
+            // 
+            this.lbPlayer2.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbPlayer2.ForeColor = System.Drawing.Color.Red;
+            this.lbPlayer2.Location = new System.Drawing.Point(32, 426);
+            this.lbPlayer2.Name = "lbPlayer2";
+            this.lbPlayer2.Size = new System.Drawing.Size(239, 53);
+            this.lbPlayer2.TabIndex = 2;
+            this.lbPlayer2.Text = "label2";
+            this.lbPlayer2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1071, 790);
+            this.Controls.Add(this.panelInfo);
             this.Controls.Add(this.panelChose);
             this.Controls.Add(this.panelMapEdit);
             this.Controls.Add(this.pictureBox1);
@@ -272,6 +324,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelMapEdit.ResumeLayout(false);
             this.panelChose.ResumeLayout(false);
+            this.panelInfo.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -296,6 +349,10 @@
         private System.Windows.Forms.Button btnGo;
         private System.Windows.Forms.Button btnNextStage;
         private System.Windows.Forms.Timer timer3;
+        private System.Windows.Forms.Panel panelInfo;
+        private System.Windows.Forms.Label lbPlayer2;
+        private System.Windows.Forms.Label lbPlayer1;
+        private System.Windows.Forms.Label lbTank;
     }
 }
 
